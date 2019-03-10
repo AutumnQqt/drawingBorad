@@ -113,15 +113,20 @@
 
     function listenToUser(canvas) {
       var painting = false
+      var lastPoint = {
+        x: undefined,
+        y: undefined
+      }
       //特性检测
       if('ontouchstart' in document){
         //触屏设备
         console.log('触屏设备')
         canvas.ontouchstart = function(event){
-          painting = startDraw(event.touches[0].clientX,event.touches[0].clientY)
+          painting = true
+          lastPoint = startDraw(event.touches[0].clientX,event.touches[0].clientY)
         }
         canvas.ontouchmove = function(event){
-          moveDraw(painting,event.touches[0].clientX,event.touches[0].clientY)
+          lastPoint = moveDraw(painting,lastPoint,event.touches[0].clientX,event.touches[0].clientY)
         }
         canvas.ontouchend = function(event){
           painting = false
@@ -129,10 +134,11 @@
       }else{
         console.log('不是触屏设备')
         canvas.onmousedown = function (event) {
-          painting = startDraw(event.clientX,event.clientY)
+          painting = true
+          lastPoint = startDraw(event.clientX,event.clientY)
         }
         canvas.onmousemove = function (event) {
-          moveDraw(painting,event.clientX,event.clientY)
+          lastPoint = moveDraw(painting,lastPoint,event.clientX,event.clientY)
         }
         canvas.onmouseup = function (event) {
           painting = false
@@ -141,22 +147,39 @@
     }
 
     function startDraw(x,y){
+      var lastPoint = {
+        'x' : x,
+        'y' : y
+      }
       if (eraserEnabled) {
         context.clearRect(x - 30, y - 30, 10, 10)
       }else{
-        context.moveTo((x - 25), (y - 25))
+        lastPoint.x = x
+        lastPoint.y = y
       } 
-      return true
+      return lastPoint
     }
-    function moveDraw(painting,x,y){
+    function moveDraw(painting,lastPoint,x,y){
+      var newPoint = {
+        'x' : x,
+        'y' : y
+      }
       if (painting == true) {
         if (eraserEnabled) {
           context.clearRect(x - 25, y - 25, 10, 10)
         }else{
-          context.lineTo((x - 25), (y - 25))
-          context.stroke()
+          drawLine(lastPoint.x,lastPoint.y,x,y)
         }
       }
+      return newPoint
+    }
+
+    function drawLine(x1,y1,x2,y2){
+      context.beginPath();
+      context.moveTo(x1-25, y1-25) // 起点
+      context.lineTo(x2-25, y2-25) // 终点
+      context.stroke()
+      context.closePath()
     }
 
     function setBrush(context) {

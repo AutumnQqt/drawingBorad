@@ -1,0 +1,9 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+#div {
+  background: green;
+  height: 100vh;
+  position: relative;
+}

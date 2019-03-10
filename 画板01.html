@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./css/画板01.css">
+  <title>画板</title>
+</head>
+<body>
+  <div id="div"></div>
+
+  <script>
+    var painting = false
+    div.onmousedown = function(event){
+      painting = true
+      var clientX = event.clientX
+      var clientY = event.clientY
+      var point = document.createElement('div')
+      point.style = "width:6px;height:6px;background:black;position:absolute;left:" 
+                    + (clientX-3) + "px;top:" + (clientY-3) +"px;border-radius:50%;"
+
+      div.appendChild(point)
+    }
+    div.onmousemove = function(event){
+      if(painting == true){
+        var clientX = event.clientX
+        var clientY = event.clientY
+        var point = document.createElement('div')
+        point.style = "width:6px;height:6px;background:black;position:absolute;left:" 
+                      + (clientX-3) + "px;top:" + (clientY-3) +"px;border-radius:50%;"
+
+        div.appendChild(point)
+      }
+    }
+    div.onmouseup = function(event){
+      painting = false
+    }
+  </script>
+</body>
+</html>

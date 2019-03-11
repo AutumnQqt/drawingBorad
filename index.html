@@ -5,198 +5,48 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>canvas画板</title>
-  <link rel="stylesheet" href="./css/canvas画板.css">
-  <script src="//at.alicdn.com/t/font_1066659_t0uss2hv5p.js"></script>
-  <style type="text/css">
-    .icon {
-      width: 22px;
-      height: 22px;
-      vertical-align: -0.15em;
-      fill: currentColor;
-      overflow: hidden;
-    }
-  </style>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-
-    #canvas {
-      border: 1px solid rgba(59, 59, 59, 0.3);
-      margin: 24px;
-      border-radius: 20px;
-      box-shadow: 0px 0px 18px -1px rgba(59, 59, 59, 0.66);
-      position: relative;
-      display: block;
-    }
-
-    #toolBar {
-      position: absolute; 
-      width: 46px;
-      padding: 3px;
-      box-sizing: border-box;
-      background: #E8E5E4;
-      border-radius: 5px;
-    }
-
-    #toolBar li {
-      cursor: pointer;
-      width: 32px;
-      height: 32px;
-      list-style: none;
-      padding: 6px;
-      box-sizing: border-box;
-      background: rgba(0, 0, 0, 0.1);
-      margin: 3px;
-      border-radius: 5px;
-    }
-
-    svg {
-      box-sizing: border-box;
-    }
-  </style>
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body>
-  <div id="toolBar">
-    <ul>
-      <li id="brush">
+  <div class="toolBar">
+    <ol class="pen">
+      <li id="clear" class="clear">
+        <svg class="clear icon" aria-hidden="true">
+          <use xlink:href="#icon-clear"></use>
+        </svg>
+      </li>
+      <li id="brush" class="brush active">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-brush"></use>
         </svg>
       </li>
-      <li id="eraser">
+      <li id="eraser" class="eraser">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-eraser"></use>
         </svg>
       </li>
-    </ul>
+      <li id="thin" class="thin active"></li>
+      <li id="thick" class="thick"></li>
+    </ol>
+    <ol class="color">
+      <li id="black" class="black active"></li>
+      <li id="red" class="red"></li>
+      <li id="orange" class="orange"></li>
+      <li id="green" class="green"></li>
+      <li id="blue" class="blue"></li>
+      <li id="save" class="save">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-Save"></use>
+        </svg>
+      </li>
+    </ol>
   </div>
-  <canvas id="canvas"></canvas>
-
-  <script>
-    // 1、设置画板大小
-    var context = canvas.getContext('2d')   //获取上下文
-    autoSetCanvasSize(canvas)              //设置画板大小
+  <canvas id="canvas" class="canvas"></canvas>
 
 
-    // 2.画画功能
-
-    //设置画笔样式
-    setBrush(context)
-    // 监听鼠标动作
-    listenToUser(canvas)
-
-    // 3.橡皮擦功能
-    listenToEraser()
-
-    
-   
-
-
-    // 函数
-    function autoSetCanvasSize(canvas) {
-      setCanvasSize(canvas)
-      window.onresize = function () {
-        setCanvasSize(canvas)
-        setBrush(context)
-      }
-      function setCanvasSize(canvas) {
-        var pageWigth = document.documentElement.clientWidth - 50    //设置画板宽高和窗口一样大
-        var pageHeight = document.documentElement.clientHeight - 50
-
-        canvas.width = pageWigth
-        canvas.height = pageHeight
-      }
-    }
-
-    function listenToUser(canvas) {
-      var painting = false
-      var lastPoint = {
-        x: undefined,
-        y: undefined
-      }
-      //特性检测
-      if('ontouchstart' in document){
-        //触屏设备
-        console.log('触屏设备')
-        canvas.ontouchstart = function(event){
-          painting = true
-          lastPoint = startDraw(event.touches[0].clientX,event.touches[0].clientY)
-        }
-        canvas.ontouchmove = function(event){
-          lastPoint = moveDraw(painting,lastPoint,event.touches[0].clientX,event.touches[0].clientY)
-        }
-        canvas.ontouchend = function(event){
-          painting = false
-        }
-      }else{
-        console.log('不是触屏设备')
-        canvas.onmousedown = function (event) {
-          painting = true
-          lastPoint = startDraw(event.clientX,event.clientY)
-        }
-        canvas.onmousemove = function (event) {
-          lastPoint = moveDraw(painting,lastPoint,event.clientX,event.clientY)
-        }
-        canvas.onmouseup = function (event) {
-          painting = false
-        }
-      }
-    }
-
-    function startDraw(x,y){
-      var lastPoint = {
-        'x' : x,
-        'y' : y
-      }
-      if (eraserEnabled) {
-        context.clearRect(x - 30, y - 30, 10, 10)
-      }else{
-        lastPoint.x = x
-        lastPoint.y = y
-      } 
-      return lastPoint
-    }
-    function moveDraw(painting,lastPoint,x,y){
-      var newPoint = {
-        'x' : x,
-        'y' : y
-      }
-      if (painting == true) {
-        if (eraserEnabled) {
-          context.clearRect(x - 25, y - 25, 10, 10)
-        }else{
-          drawLine(lastPoint.x,lastPoint.y,x,y)
-        }
-      }
-      return newPoint
-    }
-
-    function drawLine(x1,y1,x2,y2){
-      context.beginPath();
-      context.moveTo(x1-25, y1-25) // 起点
-      context.lineTo(x2-25, y2-25) // 终点
-      context.stroke()
-      context.closePath()
-    }
-
-    function setBrush(context) {
-      context.strokeStyle = 'yellow'
-      context.lineWidth = 3
-    }
-
-    var eraserEnabled = false
-    function listenToEraser(){
-      eraser.onclick = function(event){
-        eraserEnabled = true
-      }
-      brush.onclick = function(event){
-        eraserEnabled = false
-      }
-    }
-  </script>
+  <script src="//at.alicdn.com/t/font_1066659_hmzz47trsse.js"></script>
+  <script src="./script/script.js"></script>
 </body>
 
 </html>

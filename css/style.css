@@ -1,0 +1,146 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html,body {
+  width: 100%;
+}
+ul,ol {list-style: none;}
+.icon {
+  width: 22px;
+  height: 22px;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+.clearfix::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.clearfix {
+  zoom: 1;
+}
+
+.canvas {
+  display: block;
+  background-image: linear-gradient(to right,#f5f6f7 1px,transparent 1px),linear-gradient(to bottom,#f5f6f7 1px,transparent 1px);
+  background-size: 18px 18px;
+}
+.canvas.eraserActive {
+  cursor: url(./../eraser-cursor.cur), auto;
+}
+
+.toolBar {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  border-radius: 4px;
+  background: white;
+  border: 1px solid rgb(207, 207, 207);
+  box-shadow: 0px 0px 10px -1px rgba(59, 59, 59, 0.36);
+  top: 20px;
+  line-height: 50px;
+  transition: all .3s;
+}
+
+.toolBar li {
+  cursor: pointer;
+  margin: 0 50px;
+}
+.pen {
+  display: flex;
+}
+.pen li {
+  margin: 0 15px;
+  cursor: pointer;
+}
+.pen li.active {
+  transform: scale(1.2);
+  color: red;
+  
+}
+.clear {
+  margin-right: 50px;
+}
+.save {
+  padding-left: 50px;
+}
+.color {
+  display: flex;
+  margin: 0 30px;
+  line-height: 40px;
+  align-items: center;
+}
+.color li {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin: 0 10px;
+  cursor: pointer;
+}
+.color li.active {
+  box-shadow: 0px 0px 10px 0px rgba(59, 59, 59, 0.86);
+  transform: scale('1.2')
+}
+.color li.black {
+  background: #000;
+}
+.color li.red {
+  background: red;
+}
+.color li.orange {
+  background: orange;
+}
+.color li.green {
+  background: green;
+}
+.color li.blue {
+  background: blue;
+}
+
+.toolBar .pen {
+  display: flex;
+  align-items: center;
+}
+.toolBar .pen .thin {
+  width: 20px;
+  border-top: 3px solid #000;
+  margin: 0 13px 0 50px;
+}
+.toolBar .pen .thick {
+  width: 20px;
+  border-top: 7px solid #000;
+  margin: 0 50px 0 10px;
+}
+.toolBar .pen li.active {
+  border-color: red;
+}
+
+@media(max-width:885px){
+  .icon {
+    width: 18px;
+    height: 18px;
+  }
+  .toolBar {
+    top: 10px;
+    padding: 5px;
+    line-height: 30px;
+    justify-content: space-around;
+  }
+  .color {
+    line-height: 20px;
+  }
+  .color li {
+    width: 18px;
+    height: 18px;
+    margin: 0 10px;
+    
+  }
+  .clear {
+    margin-right: 5px;
+  }
+}

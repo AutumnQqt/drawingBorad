@@ -126,9 +126,11 @@ ul,ol {list-style: none;}
     height: 18px;
   }
   .toolBar {
-    top: 10px;
+    /* position: fixed;
+    top: 10px; */
     padding: 5px;
     line-height: 30px;
+    /* height: 60px; */
     justify-content: space-around;
   }
   .color {

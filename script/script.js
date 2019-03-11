@@ -18,7 +18,10 @@ clearBoard(context,canvas)
 // 5.保存功能
 saveAsImg(canvas)
 
-
+// 6.取消右划返回上一页
+document.addEventListener("touchmove", function (event) {
+  event.preventDefault();	
+}, false);
 /* ****************************** */
 
 // 函数

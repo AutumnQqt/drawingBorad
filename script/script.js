@@ -159,14 +159,14 @@ function setBrush(context) {
 
   thin.onclick = function () {
     lineWidth = 2
-    thin.classList.toggle('active')
-    thick.classList.toggle('active')
+    thin.classList.add('active')
+    thick.classList.remove('active')
     context.lineWidth = lineWidth
   }
   thick.onclick = function () {
     lineWidth = 5
-    thin.classList.toggle('active')
-    thick.classList.toggle('active')
+    thin.classList.remove('active')
+    thick.classList.add('active')
     context.lineWidth = lineWidth
   }
   context.strokeStyle = brushColor
@@ -178,14 +178,14 @@ var eraserEnabled = false
 function listenToEraser() {
   eraser.onclick = function (event) {
     eraserEnabled = true
-    eraser.classList.toggle('active')
-    brush.classList.toggle('active')
+    eraser.classList.add('active')
+    brush.classList.remove('active')
     canvas.classList.add('eraserActive')
   }
   brush.onclick = function (event) {
     eraserEnabled = false
-    brush.classList.toggle('active')
-    eraser.classList.toggle('active')
+    brush.classList.add('active')
+    eraser.classList.remove('active')
     canvas.classList.remove('eraserActive')
   }
 }
